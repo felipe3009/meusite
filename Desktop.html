@@ -6,11 +6,11 @@
   <title>Desktop</title>
   <style>
     body {
-      background: #000000; /* Fundo preto puro */
+      background: #000000;
       color: #00FF00;
       font-family: 'Courier New', 'Fixedsys', monospace;
       display: flex;
-      flex-direction: column; /* Alterado pra incluir seta no topo */
+      flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       height: 100vh;
@@ -18,7 +18,7 @@
       padding: 20px;
     }
     .back-button {
-      align-self: flex-start; /* Alinha à esquerda */
+      align-self: flex-start;
       margin-bottom: 20px;
     }
     .back-button button {
@@ -34,14 +34,14 @@
     }
     .file {
       background: black;
-      border: 2px solid #00FF00; /* Borda verde */
-      padding: 15px; /* Mantém o tamanho interno */
-      margin: 5px; /* Espaçamento lateral reduzido */
-      width: 180px; /* Largura maior */
+      border: 2px solid #00FF00;
+      padding: 15px;
+      margin: 5px;
+      width: 180px;
       text-align: center;
       cursor: pointer;
-      font-size: 14px; /* Fonte menor pra vibe retrô */
-      margin-top: 50px; /* Alinha todos na mesma linha */
+      font-size: 14px;
+      margin-top: 50px;
     }
     .file:hover {
       background: #00CC00;
@@ -82,7 +82,7 @@
       background: #CC0000;
     }
     .password-prompt {
-      margin-top: 50px; /* Espaço abaixo dos arquivos */
+      margin-top: 50px;
     }
     .password-prompt button {
       background: #00FF00;
@@ -103,7 +103,7 @@
   </div>
   <div class="file" onclick="location.href='entry.html'">Cobaia 0</div>
   <div class="file" onclick="showPatientScreen()">Paciente 4</div>
-  <div class="file">Teste GK</div>
+  <div class="file" onclick="location.href='teste-gk.html'">Teste GK</div> <!-- Ajustado para o novo nome -->
   <div class="file" onclick="location.href='paciente9.html'">Paciente 9</div>
   <div class="file" onclick="location.href='Lydia.html'">Lydia</div>
   <div id="patient-screen">
