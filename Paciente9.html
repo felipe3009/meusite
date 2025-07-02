@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paciente 9</title>
+  <style>
+    body {
+      background: #000000;
+      color: #00FF00;
+      font-family: 'Courier New', 'Fixedsys', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .back-button {
+      align-self: flex-start;
+      margin-bottom: 20px;
+    }
+    .back-button button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .back-button button:hover {
+      background: #00CC00;
+    }
+    .container {
+      display: flex;
+      justify-content: space-around;
+      width: 90%;
+      margin-top: 20px;
+    }
+    .section {
+      width: 30%;
+      min-height: 400px;
+    }
+    .box-title {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .draggables, .dropzones {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px; /* Maior espaçamento entre caixas */
+      margin-bottom: 30px; /* Separação entre draggables e dropzones */
+    }
+    .draggable, .dropzone {
+      background: black;
+      border: 2px solid #00FF00;
+      padding: 10px;
+      width: 250px;
+      text-align: center;
+      font-size: 14px;
+      cursor: move;
+    }
+    .draggable:hover {
+      background: #00CC00;
+      color: black;
+    }
+    .dropzone {
+      min-height: 50px;
+      position: relative;
+    }
+    .dropzone.check::after {
+      content: '✓';
+      color: #00FF00;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+    }
+    .dropzone.locked {
+      background: #333333;
+      border-color: #FF0000;
+      cursor: not-allowed;
+    }
+    #secret-section {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+    #secret-box {
+      background: black;
+      border: 2px solid #00FF00;
+      padding: 15px;
+      width: 250px;
+      margin: 0 auto;
+      cursor: pointer;
+    }
+    #secret-box:hover {
+      background: #00CC00;
+      color: black;
+    }
+    #secret-text {
+      display: none;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="back-button">
+    <button onclick="location.href='desktop.html'">← Voltar</button>
+  </div>
+  <div class="container">
+    <div class="section">
+      <div class="box-title">Gaspar</div>
+      <div class="draggables" id="draggables-gaspar"></div>
+      <div class="dropzones" id="dropzones-gaspar">
+        <div class="dropzone" id="drop1" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        <div class="dropzone" id="drop2" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        <div class="dropzone" id="drop3" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="box-title">Giovanni</div>
+      <div class="draggables" id="draggables-giovanni"></div>
+      <div class="dropzones" id="dropzones-giovanni">
+        <div class="dropzone" id="drop4" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        <div class="dropzone" id="drop5" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        <div class="dropzone" id="drop6" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="box-title">Naoki</div>
+      <div class="draggables" id="draggables-naoki"></div>
+      <div class="dropzones" id="dropzones-naoki">
+        <div class="dropzone" id="drop7" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        <div class="dropzone" id="drop8" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+        <div class="dropzone" id="drop9" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+      </div>
+    </div>
+  </div>
+  <div id="secret-section">
+    <div id="secret-box" onclick="showSecretText()">Assunto importante</div>
+    <div id="secret-text"></div>
+  </div>
+
+  <script>
+    let timers = {};
+    let allCorrect = false;
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function populateDraggables() {
+      const allPhrases = [
+        { id: 'phrase1', text: "Acordei no sofá com a TV ligada. Não lembro o que assisti, nem quando dormi." },
+        { id: 'phrase2', text: "Sinto que tem mais gente aqui...Mas eu não sei quem são, nem quando eles começaram a aparecer." },
+        { id: 'phrase3', text: "Comi pão duro de ontem, eu nem tava com fome. Mas era mais fácil que sair de casa pra qualquer coisa." },
+        { id: 'phrase4', text: "Hoje tive uma ideia de atividade para ensinar sobre identidade, eu sorri um pouco." },
+        { id: 'phrase5', text: "A educação é o último lugar onde ainda se acredita no futuro, ainda que o presente seja um erro." },
+        { id: 'phrase6', text: "Eu tento deixar tudo anotado, o que eu faço, o que eu penso, o que eu vejo. Mas as vezes parece que deixo coisas passarem." },
+        { id: 'phrase7', text: "Eu não sou um acidente, eu fui criado em meio aos lapsos." },
+        { id: 'phrase8', text: "Fragmentos são rastros fáceis de se apagar, o segredo é não deixar nada para trás." },
+        { id: 'phrase9', text: "Eles falam sobre uma 'cura', porém, cura de que? Eu sou o resultado final." }
+      ];
+
+      const shuffledPhrases = shuffleArray([...allPhrases]);
+      const sections = ['draggables-gaspar', 'draggables-giovanni', 'draggables-naoki'];
+
+      shuffledPhrases.forEach((phrase, index) => {
+        const sectionIndex = Math.floor(index / 3);
+        const sectionId = sections[sectionIndex];
+        const div = document.createElement('div');
+        div.className = 'draggable';
+        div.id = phrase.id;
+        div.draggable = true;
+        div.textContent = phrase.text;
+        div.ondragstart = drag;
+        document.getElementById(sectionId).appendChild(div);
+      });
+    }
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      let data = ev.dataTransfer.getData("text");
+      let phrase = document.getElementById(data);
+      let dropzone = ev.target;
+
+      if (dropzone.classList.contains('locked') || dropzone.classList.contains('check')) return;
+
+      const correctMap = {
+        'phrase1': 'drop1', 'phrase2': 'drop2', 'phrase3': 'drop3', // Gaspar
+        'phrase4': 'drop4', 'phrase5': 'drop5', 'phrase6': 'drop6', // Giovanni
+        'phrase7': 'drop7', 'phrase8': 'drop8', 'phrase9': 'drop9'  // Naoki
+      };
+
+      if (correctMap[data] === dropzone.id) {
+        dropzone.classList.add('check');
+        phrase.parentNode.removeChild(phrase); // Remove da área de arrastáveis
+        dropzone.appendChild(phrase); // Move pra dropzone
+        phrase.draggable = false; // Desativa arrastar após colocar
+        checkAllCorrect();
+      } else {
+        dropzone.classList.add('locked');
+        dropzone.textContent = 'Erro - 30s';
+        startTimer(dropzone);
+      }
+    }
+
+    function startTimer(dropzone) {
+      let timeLeft = 30;
+      dropzone.dataset.timer = timeLeft;
+      timers[dropzone.id] = setInterval(() => {
+        timeLeft--;
+        dropzone.dataset.timer = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timers[dropzone.id]);
+          delete timers[dropzone.id];
+          dropzone.classList.remove('locked');
+          dropzone.textContent = '';
+          if (dropzone.childElementCount === 0) dropzone.classList.remove('check');
+        } else {
+          dropzone.textContent = `Erro - ${Math.floor(timeLeft / 60)}:${timeLeft % 60 < 10 ? '0' : ''}${timeLeft % 60}`;
+        }
+      }, 1000);
+    }
+
+    function checkAllCorrect() {
+      const dropzones = ['drop1', 'drop2', 'drop3', 'drop4', 'drop5', 'drop6', 'drop7', 'drop8', 'drop9'];
+      allCorrect = dropzones.every(id => document.getElementById(id).classList.contains('check'));
+      if (allCorrect) {
+        document.getElementById('secret-section').style.display = 'block';
+      }
+    }
+
+    function showSecretText() {
+      const secretText = document.getElementById('secret-text');
+      secretText.textContent = 'qual deles venceu?';
+      secretText.style.display = 'block';
+    }
+
+    // Popula as áreas de arrastáveis ao carregar a página
+    window.onload = populateDraggables;
+  </script>
+</body>
+</html>

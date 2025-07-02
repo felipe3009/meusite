@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lydia</title>
+  <style>
+    body {
+      background: #000000;
+      color: #00FF00;
+      font-family: 'Courier New', 'Fixedsys', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .back-button {
+      align-self: flex-start;
+      margin-bottom: 20px;
+    }
+    .back-button button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .back-button button:hover {
+      background: #00CC00;
+    }
+    .header {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    .entries {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .entry {
+      background: black;
+      border: 2px solid #00FF00;
+      padding: 10px;
+      width: 120px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .entry:hover {
+      background: #00CC00;
+      color: black;
+    }
+    #message-box, #final-report-box {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px solid #00FF00;
+      width: 400px;
+      text-align: center;
+      font-size: 16px;
+    }
+    #final-report-note {
+      display: none;
+      margin-top: 10px;
+      padding: 5px;
+      border: 2px solid #00FF00;
+      width: 300px;
+      text-align: center;
+      font-size: 14px;
+    }
+    #final-report {
+      background: black;
+      border: 2px solid #00FF00;
+      padding: 10px;
+      width: 200px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #final-report:hover {
+      background: #00CC00;
+      color: black;
+    }
+    .password-prompt {
+      margin-left: 20px;
+      display: inline-block;
+    }
+    .password-prompt button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .password-prompt button:hover {
+      background: #00CC00;
+    }
+  </style>
+</head>
+<body>
+  <div class="back-button">
+    <button onclick="location.href='desktop.html'">← Voltar</button>
+  </div>
+  <div class="header">O que ela representa?</div>
+  <div class="entries">
+    <div class="entry" onclick="showMessage('frag10')">FRAG_10</div>
+    <div class="entry" onclick="showMessage('frag20')">FRAG_20</div>
+    <div class="entry" onclick="showMessage('frag30')">FRAG_30</div>
+    <div class="entry" onclick="showMessage('frag40')">FRAG_40</div>
+    <div class="entry" onclick="showMessage('frag50')">FRAG_50</div>
+    <div class="entry" onclick="showMessage('frag60')">FRAG_60</div>
+  </div>
+  <div id="message-box"></div>
+  <div style="display: flex; align-items: flex-start; margin-top: 20px;">
+    <div id="final-report" onclick="checkFinalReportAccess()">Relatório final</div>
+    <div class="password-prompt">
+      <button onclick="unlockFinalReport()">Desbloquear</button>
+    </div>
+  </div>
+  <div id="final-report-box"></div>
+  <div id="final-report-note"></div>
+
+  <script>
+    function showMessage(id) {
+      const messageBox = document.getElementById('message-box');
+      if (id === 'frag10') {
+        messageBox.textContent = `Após os testes que realizamos notei que Henry não está preparado para esse tratamento, adoraria continuar por ele, porém ele nunca aceitaria largar o caso.
+Após 17 reuniões com os nossos parceiros, eles concordaram comigo sobre ele largar o osso, por mais que ele não tenha gostado da ideia, ele concordou em somente me ajudar quando eu precisasse.`;
+        messageBox.style.display = 'block';
+      } else if (id === 'frag20') {
+        messageBox.textContent = `Dzeyr gizdvzir é f dlidúizf ur dvekv hlv jv uvjwrq`;
+        messageBox.style.display = 'block';
+      } else if (id === 'frag30') {
+        messageBox.textContent = `Dzeyr jvxleur é r fwvikr hlv f tfirçãf wrq rf griri`;
+        messageBox.style.display = 'block';
+      } else if (id === 'frag40') {
+        messageBox.textContent = `Dzeyr kvitvzir é r irzmr hlv tfejfdv hlvd dv vewivekr`;
+        messageBox.style.display = 'block';
+      } else if (id === 'frag50') {
+        messageBox.textContent = `Dzeyr hlrikr é r kizjkvqr hlv f cfuf jljjliir`;
+        messageBox.style.display = 'block';
+      } else if (id === 'frag60') {
+        messageBox.textContent = `Dzeyr hlzekr é f vkvief hlv ivjkr hlreuf kluf kvidzer`;
+        messageBox.style.display = 'block';
+      }
+    }
+
+    let finalReportUnlocked = false;
+
+    function unlockFinalReport() {
+      const password = prompt("Digite a senha:");
+      if (password === "Morte") {
+        finalReportUnlocked = true;
+        alert("Acesso ao Relatório final liberado.");
+      } else {
+        alert("Senha incorreta. Insira a senha.");
+      }
+    }
+
+    function checkFinalReportAccess() {
+      const finalReportBox = document.getElementById('final-report-box');
+      const finalReportNote = document.getElementById('final-report-note');
+      if (finalReportUnlocked) {
+        finalReportBox.textContent = `Wvklrh wv 1 nrmfgl, z nfosvi kzizorhlf gvnklizirznvmgv kli nzrh wl jfv l vhkvizwl, zkóh 7 gvhgvh urmzonvmgv grevnlh fnz ivzçãl wruvivmgv wl mlinzo, gvnlh hlnvmgv nzrh 1 xszmxv kziz zqfwá-oz.`;
+        finalReportNote.textContent = `a numeração diz o que é necessário`;
+        finalReportBox.style.display = 'block';
+        finalReportNote.style.display = 'block';
+      } else {
+        alert("Insira a senha.");
+      }
+    }
+  </script>
+</body>
+</html>

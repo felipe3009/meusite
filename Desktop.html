@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desktop</title>
+  <style>
+    body {
+      background: #000000; /* Fundo preto puro */
+      color: #00FF00;
+      font-family: 'Courier New', 'Fixedsys', monospace;
+      display: flex;
+      flex-direction: column; /* Alterado pra incluir seta no topo */
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .back-button {
+      align-self: flex-start; /* Alinha à esquerda */
+      margin-bottom: 20px;
+    }
+    .back-button button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .back-button button:hover {
+      background: #00CC00;
+    }
+    .file {
+      background: black;
+      border: 2px solid #00FF00; /* Borda verde */
+      padding: 15px; /* Mantém o tamanho interno */
+      margin: 5px; /* Espaçamento lateral reduzido */
+      width: 180px; /* Largura maior */
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px; /* Fonte menor pra vibe retrô */
+      margin-top: 50px; /* Alinha todos na mesma linha */
+    }
+    .file:hover {
+      background: #00CC00;
+      color: black;
+    }
+    #patient-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+    #patient-text {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    #patient-subtext {
+      font-size: 18px;
+    }
+    .close-button {
+      margin-top: 20px;
+    }
+    .close-button button {
+      background: #FF0000;
+      color: black;
+      border: 2px solid #FF0000;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .close-button button:hover {
+      background: #CC0000;
+    }
+    .password-prompt {
+      margin-top: 50px; /* Espaço abaixo dos arquivos */
+    }
+    .password-prompt button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .password-prompt button:hover {
+      background: #00CC00;
+    }
+  </style>
+</head>
+<body>
+  <div class="back-button">
+    <button onclick="location.href='index.html'">← Voltar</button>
+  </div>
+  <div class="file" onclick="location.href='entry.html'">Cobaia 0</div>
+  <div class="file" onclick="showPatientScreen()">Paciente 4</div>
+  <div class="file">Teste GK</div>
+  <div class="file" onclick="location.href='paciente9.html'">Paciente 9</div>
+  <div class="file" onclick="location.href='Lydia.html'">Lydia</div>
+  <div id="patient-screen">
+    <div id="patient-text"></div>
+    <div id="patient-subtext"></div>
+    <div class="close-button">
+      <button onclick="hidePatientScreen()">Fechar</button>
+    </div>
+  </div>
+  <div class="password-prompt">
+    <button onclick="checkPassword()">Acessar Laboratório</button>
+  </div>
+  <script>
+    function showPatientScreen() {
+      document.getElementById('patient-text').textContent = 'Svenn Magnusson';
+      document.getElementById('patient-subtext').textContent = 'pergunte oque fez.';
+      document.getElementById('patient-screen').style.display = 'flex';
+    }
+
+    function hidePatientScreen() {
+      document.getElementById('patient-screen').style.display = 'none';
+    }
+
+    function checkPassword() {
+      const password = prompt("Digite a senha:");
+      if (password === "Rua Márcio Henrique Geenen 171") {
+        location.href = "Final.html";
+      } else {
+        alert("Senha incorreta. Acesso negado.");
+      }
+    }
+  </script>
+</body>
+</html>

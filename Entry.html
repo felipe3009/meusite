@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entry</title>
+  <style>
+    body {
+      background: #000000; /* Fundo preto puro */
+      color: #00FF00;
+      font-family: 'Courier New', 'Fixedsys', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; /* Alinha tudo no topo */
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .back-button {
+      align-self: flex-start; /* Alinha à esquerda */
+      margin-bottom: 20px;
+    }
+    .back-button button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    .back-button button:hover {
+      background: #00CC00;
+    }
+    .entries, .boxes, .secret-entry {
+      display: flex;
+      flex-direction: row; /* Layout horizontal */
+      flex-wrap: nowrap; /* Evita quebra de linha */
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .entry, .box, .secret-entry {
+      background: black;
+      border: 2px solid #00FF00; /* Borda verde */
+      padding: 10px; /* Reduzi o padding pra caber */
+      margin: 5px; /* Espaçamento lateral */
+      width: 120px; /* Reduzi a largura pra ficar confortável */
+      text-align: center;
+      font-size: 12px; /* Reduzi a fonte pra caber */
+      cursor: move; /* Cursor pra arrastar */
+    }
+    .entry {
+      margin-top: 20px; /* Menos espaço no topo */
+    }
+    .boxes {
+      margin-top: 30px; /* Espaço entre entradas e caixas */
+    }
+    .secret-entry {
+      margin-top: 20px; /* Espaço abaixo das caixas */
+      display: none; /* Inicialmente oculto */
+    }
+    .box {
+      min-height: 40px; /* Altura mínima pra caixas vazias */
+      position: relative; /* Pra posicionar o check */
+    }
+    .box.check::after {
+      content: '✓';
+      color: #00FF00;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+    }
+    .box.locked {
+      background: #333333; /* Cinza escuro pra indicar bloqueio */
+      border-color: #FF0000; /* Borda vermelha ao bloquear por erro */
+      cursor: not-allowed;
+    }
+    .entry:hover, .box:hover, .secret-entry:hover {
+      background: #00CC00;
+      color: black;
+    }
+    #final-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #final-text, #final-link {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="back-button">
+    <button onclick="location.href='desktop.html'">← Voltar</button>
+  </div>
+  <div class="entries" draggable="false">
+    <div class="entry" draggable="true" id="entry1" ondragstart="drag(event)" onclick="clickEntry(event)">Entrada 1</div>
+    <div class="entry" draggable="true" id="entry2" ondragstart="drag(event)" onclick="clickEntry(event)">Entrada 2</div>
+    <div class="entry" draggable="true" id="entry3" ondragstart="drag(event)" onclick="clickEntry(event)">Entrada 3</div>
+    <div class="entry" draggable="true" id="entry4" ondragstart="drag(event)" onclick="clickEntry(event)">Entrada 4</div>
+    <div class="entry" draggable="true" id="entry5" ondragstart="drag(event)" onclick="clickEntry(event)">Entrada 5</div>
+  </div>
+  <div class="boxes">
+    <div class="box" id="box1" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+    <div class="box" id="box2" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+    <div class="box" id="box3" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+    <div class="box" id="box4" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+    <div class="box" id="box5" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+  </div>
+  <div class="secret-entry" id="secret-entry">
+    <div class="entry" id="entry-final" onclick="showFinalScreen()">Entrada Final</div>
+  </div>
+  <div id="final-screen">
+    <div id="final-text"></div>
+    <div id="final-link"></div>
+  </div>
+
+  <script>
+    let timers = {};
+    let entriesPlaced = 0;
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function clickEntry(ev) {
+      ev.preventDefault(); // Evita comportamento padrão
+      ev.stopPropagation(); // Evita que o arraste interfira
+      const id = ev.target.id;
+      const urls = {
+        'entry1': './entry1.html',
+        'entry2': './entry2.html',
+        'entry3': './entry3.html',
+        'entry4': './entry4.html',
+        'entry5': './entry5.html'
+      };
+      if (urls[id]) {
+        window.location.href = urls[id]; // Restaura o redirecionamento pras páginas de texto
+      }
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      let data = ev.dataTransfer.getData("text");
+      let entry = document.getElementById(data);
+      let box = ev.target;
+
+      if (box.classList.contains('locked') || box.classList.contains('check')) return;
+
+      const correctMap = {
+        'entry1': 'box1',
+        'entry5': 'box2',
+        'entry4': 'box3',
+        'entry3': 'box4',
+        'entry2': 'box5'
+      };
+
+      if (correctMap[data] === box.id) {
+        box.classList.add('check');
+        entry.parentNode.removeChild(entry); // Faz as entradas sumirem ao acertar
+        entriesPlaced++;
+        if (entriesPlaced === 5) {
+          document.getElementById('secret-entry').style.display = 'flex';
+        }
+      } else {
+        box.classList.add('locked');
+        box.textContent = 'Erro - 5min';
+        startTimer(box);
+      }
+    }
+
+    function startTimer(box) {
+      let timeLeft = 300;
+      box.dataset.timer = timeLeft;
+      timers[box.id] = setInterval(() => {
+        timeLeft--;
+        box.dataset.timer = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timers[box.id]);
+          delete timers[box.id];
+          box.classList.remove('locked');
+          box.textContent = '';
+        } else {
+          box.textContent = `Erro - ${Math.floor(timeLeft / 60)}:${timeLeft % 60 < 10 ? '0' : ''}${timeLeft % 60}`;
+        }
+      }, 1000);
+    }
+
+    function showFinalScreen() {
+      const finalScreen = document.getElementById('final-screen');
+      finalScreen.style.display = 'flex';
+      document.getElementById('final-text').textContent = 'Gabriella Freinn';
+      document.getElementById('final-link').textContent = 'https://drive.google.com/uc?export=download&id=1aTCVKEH9nwH6duJrt27QW6aAxqzR4e5A';
+    }
+  </script>
+</body>
+</html>

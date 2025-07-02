@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bem-Vindo</title>
+  <style>
+    body {
+      background: #000000;
+      color: #00FF00;
+      font-family: 'Courier New', 'Fixedsys', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .login-box {
+      border: 3px solid #00FF00;
+      padding: 20px;
+      background: #000000;
+      text-align: center;
+    }
+    input {
+      background: black;
+      border: 2px solid #00FF00;
+      color: #00FF00;
+      padding: 8px;
+      font-family: 'Courier New', monospace;
+      width: 200px;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #00FF00;
+      color: black;
+      border: 2px solid #00FF00;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    button:hover {
+      background: #00CC00;
+    }
+    #mensagem {
+      margin-top: 15px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>Bem-Vindo, Enrico</h1>
+    <input type="password" id="senha" placeholder="Digite a senha">
+    <button onclick="verificar()">Entrar</button>
+    <div id="mensagem"></div>
+  </div>
+  <script>
+    function verificar() {
+      const senha = document.getElementById('senha').value;
+      const msg = document.getElementById('mensagem');
+      if (senha === 'ProjetoMk1') {
+        msg.textContent = 'Acesso garantido';
+        msg.style.color = '#00FF00';
+        setTimeout(() => location.href = 'desktop.html', 1000);
+      } else {
+        msg.textContent = 'Acesso negado';
+        msg.style.color = '#FF0000';
+        document.getElementById('senha').value = '';
+      }
+    }
+    document.getElementById('senha').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') verificar();
+    });
+  </script>
+</body>
+</html>
