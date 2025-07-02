@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bem-Vindo</title>
+  <title>Projeto Mk1</title>
   <style>
     body {
       background: #000000;
@@ -17,62 +17,56 @@
       margin: 0;
       padding: 20px;
     }
-    .login-box {
-      border: 3px solid #00FF00;
-      padding: 20px;
-      background: #000000;
-      text-align: center;
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .input-group {
+      margin-top: 10px;
     }
     input {
       background: black;
-      border: 2px solid #00FF00;
       color: #00FF00;
-      padding: 8px;
+      border: 2px solid #00FF00;
+      padding: 5px;
       font-family: 'Courier New', monospace;
-      width: 200px;
-      margin-bottom: 15px;
+      font-size: 14px;
+      margin-right: 10px;
     }
     button {
       background: #00FF00;
       color: black;
       border: 2px solid #00FF00;
-      padding: 8px 16px;
+      padding: 5px 10px;
       cursor: pointer;
       font-family: 'Courier New', monospace;
+      font-size: 14px;
     }
     button:hover {
       background: #00CC00;
     }
-    #mensagem {
-      margin-top: 15px;
-      font-size: 16px;
-    }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h1>Bem-Vindo, Enrico</h1>
-    <input type="password" id="senha" placeholder="Digite a senha">
-    <button onclick="verificar()">Entrar</button>
-    <div id="mensagem"></div>
+  <h1>Bem Vindo Enrico</h1>
+  <p>Insira a senha</p>
+  <div class="input-group">
+    <input type="text" id="passwordInput" placeholder="Digite aqui...">
+    <button onclick="checkPassword()">Entrar</button>
   </div>
   <script>
-    function verificar() {
-      const senha = document.getElementById('senha').value;
-      const msg = document.getElementById('mensagem');
-      if (senha === 'ProjetoMk1') {
-        msg.textContent = 'Acesso garantido';
-        msg.style.color = '#00FF00';
-        setTimeout(() => location.href = 'desktop.html', 1000);
+    function checkPassword() {
+      const passwordInput = document.getElementById('passwordInput').value;
+      if (passwordInput === "ProjetoMk1") {
+        location.href = "desktop.html";
       } else {
-        msg.textContent = 'Acesso negado';
-        msg.style.color = '#FF0000';
-        document.getElementById('senha').value = '';
+        alert("Senha incorreta. Acesso negado.");
       }
     }
-    document.getElementById('senha').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') verificar();
-    });
   </script>
 </body>
 </html>
